@@ -37,9 +37,14 @@ void set_all_leds(int fd, int value) {
 */
 
 
-void dot3k_bl_update(DOT3K *dot3k) {
+static void dot3k_bl_update(DOT3K *dot3k) {
 	if(NOT_OPEN(dot3k)) return;
 	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_UPDATE, 1, (uint8_t[]){0x01});
+}
+
+void dot3k_bl_reset(DOT3K *dot3k) {
+	if(NOT_OPEN(dot3k)) return;
+	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_RESET, 1, (uint8_t[]){0xFF});
 }
 
 void dot3k_bl_enable(DOT3K *dot3k, int enable) {
@@ -58,25 +63,34 @@ void dot3k_bl_enable_leds(DOT3K *dot3k, uint32_t leds) {
 	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_ENABLE_LEDS, 3, data);
 }
 
-static void dot3k_bl_update_brightnesses(DOT3K *dot3k) {
+void dot3k_bl_update_brightnesses(DOT3K *dot3k) {
 	if(NOT_OPEN(dot3k)) return;
     uint8_t data[18]={0};
     for(int led = 0; led < 18; led++) {
         uint8_t level = dot3k->backlight_level[led];
-        data[led] = level;
-        // TODO: Fixme.
-        //data[led] = dot3k->backlight_level_map[led][level];
+        data[led] = dot3k->backlight_level_map[led][level];
+        //printf("%02d: %02x %02x\n", led, level, data[led]);
     }
 	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_SET_PWM_VALUES, 18, data);
 	dot3k_bl_update(dot3k);
 }
 
-void dot3k_bl_set_brightnesses(DOT3K *dot3k, uint8_t brightnesses[18]) {
+void dot3k_bl_set_brightnesses(DOT3K *dot3k, int offset, int count, uint8_t brightnesses[]) {
 	if(NOT_OPEN(dot3k)) return;
-	memcpy(dot3k->backlight_level, brightnesses, 18);
-	dot3k_bl_update_brightnesses(dot3k);
+	for(int i = offset; i < count; i++) {
+		if(i >= 18) break;
+		dot3k->backlight_level[i] = *brightnesses;
+		brightnesses++;
+	}
 }
 
+void dot3k_bl_set_brightness(DOT3K *dot3k, int offset, int count, uint8_t brightness) {
+	if(NOT_OPEN(dot3k)) return;
+	for(int i = offset; i < count; i++) {
+		if(i >= 18) break;
+		dot3k->backlight_level[i] = brightness;
+	}
+}
 
 void dot3k_bl_set_screen_rgb(DOT3K *dot3k, uint8_t pos, uint8_t r, uint8_t g, uint8_t b) {
 	if(NOT_OPEN(dot3k)) return;
@@ -90,7 +104,6 @@ void dot3k_bl_set_screen_rgb(DOT3K *dot3k, uint8_t pos, uint8_t r, uint8_t g, ui
 	dot3k->backlight_level[pos * 3 + 0] = r;
 	dot3k->backlight_level[pos * 3 + 1] = g;
 	dot3k->backlight_level[pos * 3 + 2] = b;
-	dot3k_bl_update_brightnesses(dot3k);
 }
 
 void dot3k_bl_set_bar_graph(DOT3K *dot3k, float value, float intensity) {
@@ -100,7 +113,6 @@ void dot3k_bl_set_bar_graph(DOT3K *dot3k, float value, float intensity) {
 		float dst = (value >= p ? intensity : 0);
 		dot3k->backlight_level[9 + i] = clamp_u8((int)(dst * 255));
 	}
-	dot3k_bl_update_brightnesses(dot3k);
 }
 
 void dot3k_bl_close(DOT3K *dot3k) {
@@ -119,21 +131,26 @@ int dot3k_bl_open(DOT3K *dot3k) {
 	}
 	dot3k->backlight_i2c_fd = fd;
 	ioctl(fd, I2C_SLAVE, 0x54);
-    
+    dot3k_bl_reset(dot3k);
     for(int led = 0; led < 18; led++) {
-        for(int level = 0; level < 255; level++) {
+        for(int level = 0; level < 256; level++) {
             dot3k->backlight_level_map[led][level] = level;
         }
     }
+    return 0;
 }
 
 void dot3k_bl_calibrate(DOT3K *dot3k, float gamma, float r_div, float g_div, float b_div) {
-    for(int level = 0; level < 255; level++) {
-        float p = powf(level / 255.0f, gamma);
+    for(int level = 0; level < 256; level++) {
+        float p = powf(level / 256.0f, gamma);
         for(int off = 0; off < 3; off++) {
-            dot3k->backlight_level_map[off * 3 + 0][level] = clamp_u8(p / r_div * 255.0f);
-            dot3k->backlight_level_map[off * 3 + 1][level] = clamp_u8(p / g_div * 255.0f);
-            dot3k->backlight_level_map[off * 3 + 2][level] = clamp_u8(p / b_div * 255.0f);
+			uint8_t r = clamp_u8(p / r_div * 255.0f);
+			uint8_t g = clamp_u8(p / g_div * 255.0f);
+			uint8_t b = clamp_u8(p / b_div * 255.0f);
+            dot3k->backlight_level_map[off * 3 + 0][level] = clamp_u8(r);
+            dot3k->backlight_level_map[off * 3 + 1][level] = clamp_u8(g);
+            dot3k->backlight_level_map[off * 3 + 2][level] = clamp_u8(b);
+            //printf("%02x: %02x %02x %02x\n", level, r, g, b);
         }
     }
 }

@@ -31,4 +31,4 @@
 # Debug files
 *.dSYM/
 
-/dot3k-test
+/bin/*

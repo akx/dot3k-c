@@ -1,6 +1,6 @@
 CFLAGS := -std=c99 -lm -g -I.
 
-bin/dot3k-test: test/dot3k-test.c libdot3k.a 
+bin/bl-test: test/bl-test.c libdot3k.a 
 	$(CC) $(CFLAGS) -o $@ $< libdot3k.a
 
 bin/midi-test: test/midi-test.c libdot3k.a 

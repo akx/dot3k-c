@@ -31,3 +31,14 @@ void dot3k_bl_update_brightnesses(DOT3K *dot3k);
 int dot3k_joy_open(DOT3K *dot3k);
 int dot3k_joy_close(DOT3K *dot3k);
 uint8_t dot3k_joy_poll(DOT3K *dot3k);
+
+// LCD
+int dot3k_lcd_write_command(DOT3K *dot3k, uint8_t command, uint8_t instr_set);
+int dot3k_lcd_set_contrast(DOT3K *dot3k, uint8_t contrast);
+int dot3k_lcd_write_text(DOT3K *dot3k, const char *text);
+void dot3k_lcd_set_pos(DOT3K *dot3k,int row, int col);
+void dot3k_lcd_set_mode(DOT3K *dot3k, int display, int cursor, int blink);
+void dot3k_lcd_clear(DOT3K *dot3k);
+void dot3k_lcd_home(DOT3K *dot3k);
+int dot3k_lcd_close(DOT3K *dot3k);
+int dot3k_lcd_open(DOT3K *dot3k);

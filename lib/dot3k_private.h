@@ -9,6 +9,11 @@ typedef struct {
     uint8_t backlight_level_map[18][256];
     // Joystick
     uint8_t joystick_state;
+    // LCD
+    int lcd_spi_fd;
+    int lcd_register_select_gpio_pin;
+    int lcd_width;
+    int lcd_height;
 } DOT3K;
 
 int rpi_gpio_open(void);

@@ -106,13 +106,28 @@ void dot3k_bl_set_screen_rgb(DOT3K *dot3k, uint8_t pos, uint8_t r, uint8_t g, ui
 	dot3k->backlight_level[pos * 3 + 2] = b;
 }
 
-void dot3k_bl_set_bar_graph(DOT3K *dot3k, float value, float intensity) {
+void dot3k_bl_set_bar_graph(DOT3K *dot3k, float value, uint8_t brightness) {
 	if(NOT_OPEN(dot3k)) return;
 	for(int i = 0; i < 9; i++) {
 		float p = i / 9.0f;
-		float dst = (value >= p ? intensity : 0);
-		dot3k->backlight_level[9 + i] = clamp_u8((int)(dst * 255));
+		uint8_t dst = (value >= p ? brightness : 0);
+		dot3k->backlight_level[9 + i] = dst;
 	}
+}
+
+void dot3k_bl_set_bar_graph_train(DOT3K *dot3k, uint8_t brightness_on, uint8_t brightness_off, int position, int wrap) {
+	if(NOT_OPEN(dot3k)) return;
+    if(position < 0) return;
+    if(wrap == 1) {
+        position %= 18;
+        if(position >= 9) position = 17 - position;
+    } else {
+        position %= 9;
+    }
+    uint8_t train[9] = {0};
+    memset(train, brightness_off, 9);
+    train[position] = brightness_on;
+    memcpy(dot3k->backlight_level + 9, train, 9);
 }
 
 void dot3k_bl_close(DOT3K *dot3k) {

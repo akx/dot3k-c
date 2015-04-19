@@ -20,7 +20,7 @@ int main(int argc, char **argv) {
     }
     for(int i = 0; i < 100; i++) {
         float f = i / 100.0f;
-        dot3k_bl_set_bar_graph(d, f, 0.2);
+        dot3k_bl_set_bar_graph(d, f, 0x30);
         dot3k_bl_update_brightnesses(d);
         usleep(10000);
     }

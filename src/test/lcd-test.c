@@ -1,8 +1,9 @@
+#define _DEFAULT_SOURCE // usleep
 #include <stdio.h>
-#include "include/dot3k.h"
+#include "dot3k.h"
 #include <time.h>
 
-int main(int argc, char **argv) {
+int main() {
 	DOT3K* d = dot3k_init();
 	if(dot3k_bl_open(d)) return 1;
     

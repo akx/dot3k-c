@@ -31,5 +31,5 @@ void rpi_gpio_close(void);
 
 
 #define BUILDING_DOT3K
-#include "../include/dot3k.h"
+#include "dot3k.h"
 

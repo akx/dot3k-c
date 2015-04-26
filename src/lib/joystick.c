@@ -7,7 +7,6 @@
 #include <unistd.h>
 #include <poll.h>
 
-#define NOT_OPEN(dot3k) (dot3k->joystick_fdset == NULL)
 #define N_JOYPINS 5
 
 typedef struct {
@@ -15,7 +14,7 @@ typedef struct {
     uint8_t gpio_pin;
 } JOYPIN;
 
-JOYPIN joypins[N_JOYPINS] = {
+static const JOYPIN joypins[N_JOYPINS] = {
     {DOT3K_JOY_UP, 27},
     {DOT3K_JOY_LEFT, 17},
     {DOT3K_JOY_RIGHT, 22},
@@ -37,9 +36,7 @@ int dot3k_joy_close(DOT3K *dot3k) {
 }
 
 uint8_t dot3k_joy_poll(DOT3K *dot3k) {
-    int len, rc;
-    char buf[8];
-    uint8_t new_state;
+    uint8_t new_state = 0;
     for(int i = 0; i < N_JOYPINS; i++) {
         if(!rpi_gpio_input(joypins[i].gpio_pin)) new_state |= joypins[i].mnemonic;
     }

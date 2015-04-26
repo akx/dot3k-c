@@ -1,4 +1,4 @@
-#include "include/dot3k.h"
+#include "dot3k.h"
 #include <unistd.h>
 #include <stdio.h>
 

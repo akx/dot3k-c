@@ -1,4 +1,4 @@
-#define __USE_XOPEN_EXTENDED  // for usleep
+#define _DEFAULT_SOURCE // usleep
 #include <linux/spi/spidev.h>
 #include <math.h>
 #include <sys/ioctl.h>
@@ -41,8 +41,8 @@ int dot3k_lcd_write_command(DOT3K *dot3k, uint8_t command, uint8_t instr_set) {
     return 0;
 }
 
-int dot3k_lcd_write_text(DOT3K *dot3k, const char *text) {
-    if(NOT_OPEN(dot3k)) return 1;
+void dot3k_lcd_write_text(DOT3K *dot3k, const char *text) {
+    if(NOT_OPEN(dot3k)) return;
     rpi_gpio_output(dot3k->lcd_register_select_gpio_pin, 1);
     while(*text) {
         uint8_t ch = (*text) & 0b1111111;
@@ -52,8 +52,7 @@ int dot3k_lcd_write_text(DOT3K *dot3k, const char *text) {
     }
 }
 
-int dot3k_lcd_set_contrast(DOT3K *dot3k, uint8_t contrast) {
-    if(contrast < 0) contrast = 0;
+void dot3k_lcd_set_contrast(DOT3K *dot3k, uint8_t contrast) {
     if(contrast > 0x3F) contrast = 0x3F;
     // For 3.3v operation the booster must be on, which is
     // on the same command as the (2-bit) high-nibble of contrast

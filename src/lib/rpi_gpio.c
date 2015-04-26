@@ -22,6 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#define _DEFAULT_SOURCE // usleep
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -51,7 +52,7 @@ static volatile uint32_t *gpio_map = NULL;
 
 static void short_wait(void)
 {
-    usleep(10000); // way longer than this should be
+    usleep((useconds_t)10000); // way longer than this should be
 }
 
 int rpi_gpio_open(void)
@@ -90,12 +91,14 @@ int rpi_gpio_open(void)
     if ((uint32_t)gpio_mem % PAGE_SIZE)
         gpio_mem += PAGE_SIZE - ((uint32_t)gpio_mem % PAGE_SIZE);
 
-    gpio_map = (uint32_t *)mmap(gpio_mem, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, mem_fd, gpio_base);
+    void *gpio_map_ptr = mmap(gpio_mem, BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED|MAP_FIXED, mem_fd, gpio_base);
 
-    if ((uint32_t)gpio_map < 0) {
+    if (gpio_map_ptr == MAP_FAILED) {
         perror("rpi_gpio: mmap");
         return 3;
     }
+    
+    gpio_map = (uint32_t *)gpio_map_ptr;
 
     return 0;
 }

@@ -92,7 +92,7 @@ void dot3k_bl_set_brightness(DOT3K *dot3k, int offset, int count, uint8_t bright
 	}
 }
 
-void dot3k_bl_set_screen_rgb(DOT3K *dot3k, uint8_t pos, uint8_t r, uint8_t g, uint8_t b) {
+void dot3k_bl_set_screen_rgb(DOT3K *dot3k, int8_t pos, uint8_t r, uint8_t g, uint8_t b) {
 	if(NOT_OPEN(dot3k)) return;
 	if(pos >= 3) return;
     if(pos == -1) {

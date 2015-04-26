@@ -1,4 +1,4 @@
-#include "include/dot3k.h"
+#include "dot3k.h"
 #include <portmidi.h>
 #include <porttime.h>
 #include <stdio.h>
@@ -24,11 +24,11 @@ static void list_devices() {
     }
 }
 
-int main(int argc, char **argv) {
+int main() {
     PmStream * midi;
     PmError status, length;    
     PmEvent buffer[1];
-    int i;
+    int i = 0;
     DOT3K* d = dot3k_init();
     
     

@@ -3,8 +3,8 @@
 #include <stdio.h>
 
 int main() {
-	DOT3K* d = dot3k_init();
-	if(dot3k_joy_open(d)) {
+    DOT3K* d = dot3k_init();
+    if(dot3k_joy_open(d)) {
         perror("joy open");
         return 1;
     }

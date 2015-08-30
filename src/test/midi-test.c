@@ -37,9 +37,9 @@ int main() {
     Pm_OpenInput(&midi, Pm_GetDefaultInputDeviceID(), NULL, 100, Pt_Time, NULL);
     Pm_SetFilter(midi, PM_FILT_ACTIVE | PM_FILT_CLOCK | PM_FILT_SYSEX);
    
-	if(dot3k_bl_open(d)) return 1;
-	dot3k_bl_enable(d, 1);
-	dot3k_bl_enable_leds(d, 0xFFFFFF);
+    if(dot3k_bl_open(d)) return 1;
+    dot3k_bl_enable(d, 1);
+    dot3k_bl_enable_leds(d, 0xFFFFFF);
     dot3k_bl_set_brightness(d, 0, 18, 0);
     dot3k_bl_update_brightnesses(d);
     dot3k_bl_calibrate(d, 2.4, 1.6, 1.4, 1);
@@ -68,7 +68,7 @@ int main() {
             i++;
         }
     }
-	/*
+    /*
     dot3k_bl_set_brightness(d, 0, 9, 254);
     dot3k_bl_update_brightnesses(d);
     usleep(500000);
@@ -88,5 +88,5 @@ int main() {
     }
     //dot3k_bl_enable(d, 0);
     * */
-	return 0;
+    return 0;
 }

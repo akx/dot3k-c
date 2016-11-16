@@ -5,6 +5,11 @@
 typedef struct DOT3K DOT3K;
 #endif
 
+//enable use of functions in cpp program
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 // General
 DOT3K *dot3k_init();
 
@@ -43,3 +48,8 @@ void dot3k_lcd_clear(DOT3K *dot3k);
 void dot3k_lcd_home(DOT3K *dot3k);
 int dot3k_lcd_close(DOT3K *dot3k);
 int dot3k_lcd_open(DOT3K *dot3k);
+
+//enable use of functions in cpp program
+#ifdef __cplusplus
+}
+#endif

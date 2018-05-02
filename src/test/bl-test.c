@@ -8,9 +8,10 @@ int main() {
     
     dot3k_bl_enable(d, 1);
     dot3k_bl_enable_leds(d, 0xFFFFFF);
-    dot3k_bl_set_brightness(d, 0, 9, 254);
+    dot3k_bl_set_brightness(d, 0, 18, 254);
     dot3k_bl_update_brightnesses(d);
     usleep(500000);
+		/*
     for(float gamma = 1.0; gamma <= 3.0; gamma += 0.1) {
         dot3k_bl_calibrate(d, gamma, 1.6, 1.4, 1);
         dot3k_bl_set_screen_rgb(d, 1, 255, 43, 64);
@@ -25,6 +26,7 @@ int main() {
         dot3k_bl_update_brightnesses(d);
         usleep(10000);
     }
-    //dot3k_bl_enable(d, 0);
+		*/
+    dot3k_bl_enable(d, 0);
     return 0;
 }

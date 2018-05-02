@@ -30,7 +30,7 @@ def build_lib(flavor, sources):
         obj_path = os.path.join(obj_dir, obj_name)
         ensure_file_dir(obj_path)
         if should_build(obj_path, [src_path]):
-            cflags = "-Wall -Wextra -Wno-unused-parameter -O2 -g -Isrc/lib -Iinclude -std=c99 -c"
+            cflags = "-Wall -Wextra -Wno-unused-parameter -O2 -g -Isrc/lib.hat -Iinclude -std=c99 -c"
             if flavor == "shared":
                 cflags += " -fPIC"
             call("gcc %s -o %s %s" % (cflags, obj_path, src_path))
@@ -75,7 +75,7 @@ def clean():
     if to_clean:
         call("rm %s" % " ".join(to_clean))
 
-lib_sources = glob.glob("src/lib/*.c")
+lib_sources = glob.glob("src/lib.hat/*.c")
 test_sources = glob.glob("src/test/*.c")
 
 TARGETS = {

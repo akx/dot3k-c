@@ -27,6 +27,9 @@ int main() {
 		usleep(10000);
 	}
 	*/
+	
+	dot3k_bl_set_bar_graph_leds( d, 0b00101010 );
+	
 	dot3k_bl_enable(d, 0);
 	return 0;
 }

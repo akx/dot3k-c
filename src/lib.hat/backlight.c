@@ -95,29 +95,37 @@ void dot3k_bl_set_screen_rgb(DOT3K *dot3k, int8_t pos, uint8_t r, uint8_t g, uin
     dot3k->backlight_level[(pos * 3) + 2] = r;
 }
 
-void dot3k_bl_set_bar_graph(DOT3K *dot3k, float value, uint8_t brightness) {
+void dot3k_bl_set_bar_graph_leds(DOT3K *dot3k, uint8_t bitmask) {
 	if(NOT_OPEN(dot3k)) return;
-	for(int i = 0; i < 9; i++) {
-		float p = i / 9.0f;
-		uint8_t dst = (value >= p ? brightness : 0);
-		dot3k->backlight_level[9 + i] = dst;
-	}
+
+	// Target graph
+	ioctl(fd, I2C_SLAVE, 0x2C);
+	
+	uint8_t actualvalue = bitmask & 0b00111111;	// 6 LEDS
+
+	// Set direct duty 0..8
+	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, R_LED_DIRECT_DUT, 1, (uint8_t[]){0xF0});
+	// Set default polarity
+	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, R_LED_POLARITY, 1, (uint8_t[]){0x00});
+	
+	// Set light mask
+	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, R_LED_OUTPUT_CON, 1, (uint8_t[]){actualvalue});
 }
 
-void dot3k_bl_set_bar_graph_train(DOT3K *dot3k, uint8_t brightness_on, uint8_t brightness_off, int position, int wrap) {
+/*
+void dot3k_bl_set_bar_graph(DOT3K *dot3k, int offset, uint8_t value) {
 	if(NOT_OPEN(dot3k)) return;
-	if(position < 0) return;
-	if(wrap == 1) {
-		position %= 18;
-		if(position >= 9) position = 17 - position;
-	} else {
-		position %= 9;
-	}
-	uint8_t train[9] = {0};
-	memset(train, brightness_off, 9);
-	train[position] = brightness_on;
-	memcpy(dot3k->backlight_level + 9, train, 9);
+	if(offset >= 6) return;
+
+	// Target cap1166
+	ioctl(fd, I2C_SLAVE, 0x2C);
+	
+	uint8_t trigger = value << offset;
+	dot3k->backlight_graph = (dot3k->backlight_graph & ~(1<<offset)) | trigger;
+	
 }
+*/
+
 
 void dot3k_bl_close(DOT3K *dot3k) {
 	if(NOT_OPEN(dot3k)) return;

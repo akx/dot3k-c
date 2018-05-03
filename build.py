@@ -75,7 +75,7 @@ def clean():
     if to_clean:
         call("rm %s" % " ".join(to_clean))
 
-lib_sources = glob.glob("src/liblib.hat/*.c")
+lib_sources = glob.glob("src/lib.hat/*.c")
 test_sources = glob.glob("src/test/*.c")
 
 TARGETS = {

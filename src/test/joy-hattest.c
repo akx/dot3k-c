@@ -7,14 +7,14 @@ int main() {
 
 	dothat_input_recalibrate(d);
 
-	bool active = true;
-	while( active )
+	int active = 1;
+	while( active != 0 )
 	{
 		uint8_t inp = dothat_input_poll(d);
 		
 		dothat_lcd_clear(d);
 		dothat_lcd_home(d);
-		if( (inp & DOTHAT_CANCEL) != 0 ) { dothat_lcd_write_text(d, "Quit"); active = false; }
+		if( (inp & DOTHAT_CANCEL) != 0 ) { dothat_lcd_write_text(d, "Quit"); active = 0; }
 		if( (inp & DOTHAT_LEFT) != 0 ) { dothat_lcd_write_text(d, "Left"); }
 		if( (inp & DOTHAT_RIGHT) != 0 ) { dothat_lcd_write_text(d, "Right"); }
 		if( (inp & DOTHAT_UP) != 0 ) { dothat_lcd_write_text(d, "Up"); }

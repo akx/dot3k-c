@@ -21,7 +21,7 @@ DOTHAT* dothat_init() {
 	dothat->i2c_fd = open("/dev/i2c-1", O_RDWR);
 	if(dothat->i2c_fd < 0) {
 		perror("Failed to open I2C");
-		return nullptr;
+		return 0;
 	}
 
 	// Open SPI (LCD Text)
@@ -31,7 +31,7 @@ DOTHAT* dothat_init() {
 	dothat->spi_fd = open("/dev/spidev0.0", O_RDWR);
 	if(dothat->spi_fd <= 0) {
 		perror("Failed to open SPI");
-		return nullptr;
+		return 0;
 	}
 
 	// Initialise Backlight
@@ -43,10 +43,9 @@ DOTHAT* dothat_init() {
 	}
 
 	// Initialise Graph LEDs
-	//i2c_smbus_write_i2c_block_data(dothat->backlight_i2c_fd, R_LED_POLARITY, 1, (uint8_t[]){0x00});		// Set default polarity
-	i2c_smbus_write_byte_data(dothat->i2c_fd, R_LED_POLARITY, 0x00);
-	dothat_bl_set_bar_graph_brightness(dothat, 0b00000100);
-	dothat_bl_set_bar_graph_leds(dothat, 0b00000000);
+	i2c_smbus_write_i2c_block_data(dothat->backlight_i2c_fd, R_LED_POLARITY, 1, (uint8_t[]){0x00});		// Set default polarity
+	dothat_graph_set_brightness(dothat, 0b00000100);
+	dothat_graph_set_leds(dothat, 0b00000000);
 
 	// Initialise LCD
 	dothat->lcd_width = 16;

@@ -43,7 +43,7 @@ DOTHAT* dothat_init() {
 	}
 
 	// Initialise Graph LEDs
-	i2c_smbus_write_i2c_block_data(dothat->backlight_i2c_fd, R_LED_POLARITY, 1, (uint8_t[]){0x00});		// Set default polarity
+	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_LED_POLARITY, 1, (uint8_t[]){0x00});		// Set default polarity
 	dothat_graph_set_brightness(dothat, 0b00000100);
 	dothat_graph_set_leds(dothat, 0b00000000);
 

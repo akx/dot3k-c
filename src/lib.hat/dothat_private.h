@@ -2,20 +2,20 @@
 #include <poll.h>
 
 typedef struct {
+    int i2c_fd;
+    int spi_fd;
+
     // Backlight
-    int backlight_i2c_fd;
     uint8_t backlight_level[18];
     uint32_t backlight_enable;
     uint8_t backlight_level_map[18][256];
-		uint8_t backlight_graph;
-    // Joystick
-    uint8_t joystick_state;
+    // Input
+    uint8_t input_state;
     // LCD
-    int lcd_spi_fd;
     int lcd_register_select_gpio_pin;
     int lcd_width;
     int lcd_height;
-} DOT3K;
+} DOTHAT;
 
 int rpi_gpio_open(void);
 void rpi_gpio_setup_pin(int gpio,int direction,int pud);
@@ -51,6 +51,10 @@ void rpi_gpio_close(void);
 #define R_LED_OUTPUT_CON		0x74
 #define R_LED_LTRANS_CON		0x77
 #define R_LED_MIRROR_CON		0x79
+
+#define R_INPUT_STATUS    0x03
+#define R_INPUT_1_THRESH  0x30
+#define R_INPUT_1_DELTA   0x10
 
 
 #define BUILDING_DOT3K

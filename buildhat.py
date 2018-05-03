@@ -30,7 +30,7 @@ def build_lib(flavor, sources):
         obj_path = os.path.join(obj_dir, obj_name)
         ensure_file_dir(obj_path)
         if should_build(obj_path, [src_path]):
-            cflags = "-Wall -Wextra -Wno-unused-parameter -O2 -g -Isrc/lib -Iinclude -std=c99 -c"
+            cflags = "-Wall -Wextra -Wno-unused-parameter -O2 -g -Isrc/lib.hat -Iinclude -std=c99 -c"
             if flavor == "shared":
                 cflags += " -fPIC"
             call("gcc %s -o %s %s" % (cflags, obj_path, src_path))
@@ -38,11 +38,11 @@ def build_lib(flavor, sources):
             
     
     if flavor == "shared":
-        if should_build("libdot3k.so", obj_paths):
-            call("gcc -shared -o libdot3k.so %s" % " ".join(obj_paths))
+        if should_build("libdothat.so", obj_paths):
+            call("gcc -shared -o libdothat.so %s" % " ".join(obj_paths))
     else:
-        if should_build("libdot3k.a", obj_paths):
-            call("ar rcs libdot3k.a %s" % " ".join(obj_paths))    
+        if should_build("libdothat.a", obj_paths):
+            call("ar rcs libdothat.a %s" % " ".join(obj_paths))    
 
 
 def build_test(src_file):
@@ -54,7 +54,7 @@ def build_test(src_file):
     else:
         libs = "-lm"
     if should_build(bin_path, [src_file]):
-        call("gcc -Wall -Wextra -O2 -g -Iinclude -std=c99 -o %s %s libdot3k.a %s" % (bin_path, src_file, libs))
+        call("gcc -Wall -Wextra -O2 -g -Iinclude -std=c99 -o %s %s libdothat.a %s" % (bin_path, src_file, libs))
 
 
 def build_tests():
@@ -65,7 +65,7 @@ def clean():
     targets = itertools.chain(
         glob.glob("obj/shared/*.o"),
         glob.glob("obj/static/*.o"),
-        glob.glob("./libdot3k.*"),
+        glob.glob("./libdothat.*"),
         glob.glob("bin/*-test"),
     )
     to_clean = set()
@@ -75,8 +75,8 @@ def clean():
     if to_clean:
         call("rm %s" % " ".join(to_clean))
 
-lib_sources = glob.glob("src/lib/*.c")
-test_sources = glob.glob("src/test/*-test.c")
+lib_sources = glob.glob("src/lib.hat/*.c")
+test_sources = glob.glob("src/test/*-hattest.c")
 
 TARGETS = {
     "shared": lambda: build_lib("shared", lib_sources),

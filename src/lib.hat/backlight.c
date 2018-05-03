@@ -96,14 +96,15 @@ void dot3k_bl_set_screen_rgb(DOT3K *dot3k, int8_t pos, uint8_t r, uint8_t g, uin
     if(NOT_OPEN(dot3k)) return;
     if(pos >= 6) return;
     if(pos == -1) {
-        dot3k_bl_set_screen_rgb(dot3k, 0, r, g, b);
-        dot3k_bl_set_screen_rgb(dot3k, 1, r, g, b);
-        dot3k_bl_set_screen_rgb(dot3k, 2, r, g, b);
-        return;
+			for(int i = 0; i < 6; i++)
+			{
+        dot3k_bl_set_screen_rgb(dot3k, i, r, g, b);
+      }
+			return;
     }
-    dot3k->backlight_level[pos * 3 + 0] = b;
-    dot3k->backlight_level[pos * 3 + 1] = g;
-    dot3k->backlight_level[pos * 3 + 2] = r;
+    dot3k->backlight_level[(pos * 3) + 0] = b;
+    dot3k->backlight_level[(pos * 3) + 1] = g;
+    dot3k->backlight_level[(pos * 3) + 2] = r;
 }
 
 void dot3k_bl_set_bar_graph(DOT3K *dot3k, float value, uint8_t brightness) {

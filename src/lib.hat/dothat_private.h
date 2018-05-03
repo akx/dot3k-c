@@ -31,18 +31,18 @@ void rpi_gpio_close(void);
 #define GPIO_PUD_UP 2
 
 
-#define R_LED_BEHAVIOUR_1  0x81 # For LEDs 1-4
-#define R_LED_BEHAVIOUR_2  0x82 # For LEDs 5-8
-#define R_LED_PULSE_1_PER  0x84
-#define R_LED_PULSE_2_PER  0x85
-#define R_LED_BREATHE_PER  0x86
-#define R_LED_CONFIG       0x88
-#define R_LED_PULSE_1_DUT  0x90
-#define R_LED_PULSE_2_DUT  0x91
-#define R_LED_BREATHE_DUT  0x92
-#define R_LED_DIRECT_DUT   0x93
-#define R_LED_DIRECT_RAMP  0x94
-#define R_LED_OFF_DELAY    0x95
+#define R_LED_BEHAVIOUR_1   0x81 # For LEDs 1-4
+#define R_LED_BEHAVIOUR_2   0x82 # For LEDs 5-8
+#define R_LED_PULSE_1_PER   0x84
+#define R_LED_PULSE_2_PER   0x85
+#define R_LED_BREATHE_PER   0x86
+#define R_LED_CONFIG        0x88
+#define R_LED_PULSE_1_DUT   0x90
+#define R_LED_PULSE_2_DUT   0x91
+#define R_LED_BREATHE_DUT   0x92
+#define R_LED_DIRECT_DUT    0x93
+#define R_LED_DIRECT_RAMP   0x94
+#define R_LED_OFF_DELAY     0x95
 
 
 #define R_LED_OUTPUT_TYPE		0x71
@@ -52,10 +52,10 @@ void rpi_gpio_close(void);
 #define R_LED_LTRANS_CON		0x77
 #define R_LED_MIRROR_CON		0x79
 
-#define R_INPUT_STATUS    0x03
-#define R_INPUT_1_THRESH  0x30
-#define R_INPUT_1_DELTA   0x10
-
+#define R_INPUT_STATUS      0x03
+#define R_INPUT_1_THRESH    0x30
+#define R_INPUT_1_DELTA     0x10
+#define R_INPUT_ENABLE      0x21
 
 #define BUILDING_DOTHAT
 #include "dothat.h"

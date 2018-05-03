@@ -66,7 +66,7 @@ def clean():
         glob.glob("obj/shared/*.o"),
         glob.glob("obj/static/*.o"),
         glob.glob("./libdothat.*"),
-        glob.glob("bin/*-test"),
+        glob.glob("bin/*-hattest"),
     )
     to_clean = set()
     for target in targets:

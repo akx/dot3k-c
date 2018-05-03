@@ -29,7 +29,7 @@ SOFTWARE.
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include "dot3k_private.h"
+#include "dothat_private.h"
 
 #define BCM2708_PERI_BASE_DEFAULT    0x20000000
 #define GPIO_BASE_OFFSET                0x200000

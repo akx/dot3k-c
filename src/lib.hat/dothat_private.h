@@ -57,6 +57,6 @@ void rpi_gpio_close(void);
 #define R_INPUT_1_DELTA   0x10
 
 
-#define BUILDING_DOT3K
-#include "dot3k.h"
+#define BUILDING_DOTHAT
+#include "dothat.h"
 

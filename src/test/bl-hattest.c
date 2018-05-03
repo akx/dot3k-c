@@ -19,16 +19,17 @@ int main() {
 	dothat_bl_update_brightnesses(d);
 	usleep(500000);
 	
-	dothat_bl_set_bar_graph_leds( d, 0b00101010 );
+	dothat_graph_set_brightness( d, 1 );
+	dothat_graph_set_leds( d, 0b00101010 );
 	usleep(500000);
-	dothat_bl_set_bar_graph_leds( d, 0b00010101 );
+	dothat_graph_set_leds( d, 0b00010101 );
 	usleep(500000);
-	dothat_bl_set_bar_graph_leds( d, 0b00111111 );
+	dothat_graph_set_leds( d, 0b00111111 );
 
 	usleep(1000000);
 
 	dothat_bl_enable(d, 0);
-	dothat_bl_set_bar_graph_leds( d, 0x00 );
+	dothat_graph_set_leds( d, 0x00 );
 	
 	dothat_shutdown(d);
 	return 0;

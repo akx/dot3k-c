@@ -3,25 +3,26 @@
 #include <stdio.h>
 
 int main() {
-    DOTHAT* d = dothat_init();
-    
-		dothat_input_recalibrate(d);
-		
-		// TODO: Fix test
-		/*
-    for(;;) {
-        uint8_t state = dothat_joy_poll(d);
-        printf("%02X : %2s %2s %2s %2s %2s\n",
-            state,
-            ((state & DOTHAT_JOY_LEFT) ? "lf" : ""),
-            ((state & DOTHAT_JOY_UP) ? "up" : ""),
-            ((state & DOTHAT_JOY_DOWN) ? "dn" : ""),
-            ((state & DOTHAT_JOY_RIGHT) ? "rt" : ""),
-            ((state & DOTHAT_JOY_BTN) ? "button" : "")
-        );
-        usleep(50000);
-    }
-		*/
+	DOTHAT* d = dothat_init();
 
-    dothat_shutdown(d);
+	dothat_input_recalibrate(d);
+
+	bool active = true;
+	while( active )
+	{
+		uint8_t inp = dothat_input_poll(d);
+		
+		dothat_lcd_clear(d);
+		dothat_lcd_home(d);
+		if( (inp & DOTHAT_CANCEL) != 0 ) { dothat_lcd_write_text(d, "Quit"); active = false; }
+		if( (inp & DOTHAT_LEFT) != 0 ) { dothat_lcd_write_text(d, "Left"); }
+		if( (inp & DOTHAT_RIGHT) != 0 ) { dothat_lcd_write_text(d, "Right"); }
+		if( (inp & DOTHAT_UP) != 0 ) { dothat_lcd_write_text(d, "Up"); }
+		if( (inp & DOTHAT_DOWN) != 0 ) { dothat_lcd_write_text(d, "Down"); }
+		if( (inp & DOTHAT_BUTTON) != 0 ) { dothat_lcd_write_text(d, "Button"); }
+		
+		usleep(150000);
+	}
+
+	dothat_shutdown(d);
 }

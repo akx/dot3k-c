@@ -28,12 +28,12 @@ void dothat_graph_set_brightness(DOTHAT *dothat, uint8_t brightness);
 void dothat_graph_set_leds(DOTHAT *dothat, uint8_t bitmask);
 
 // Input
-#define DOTHAT_UP      0b00000001
-#define DOTHAT_DOWN    0b00000010
-#define DOTHAT_LEFT    0b00000100
-#define DOTHAT_RIGHT   0b00001000
-#define DOTHAT_ENTER   0b00010000
-#define DOTHAT_ESCAPE  0b00100000
+#define DOTHAT_CANCEL  0b00000001
+#define DOTHAT_UP      0b00000010
+#define DOTHAT_DOWN    0b00000100
+#define DOTHAT_LEFT    0b00001000
+#define DOTHAT_BUTTON  0b00010000
+#define DOTHAT_RIGHT   0b00100000
 
 void dothat_input_recalibrate(DOTHAT *dothat);
 uint8_t dothat_input_poll(DOTHAT *dothat);

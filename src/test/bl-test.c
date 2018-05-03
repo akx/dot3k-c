@@ -19,17 +19,16 @@ int main() {
 	dot3k_bl_set_screen_rgb(d, 5, 255, 0, 255);
 	dot3k_bl_update_brightnesses(d);
 	usleep(500000);
-	/*
-	for(int i = 0; i < 100; i++) {
-		float f = i / 100.0f;
-		dot3k_bl_set_bar_graph(d, f, 0x30);
-		dot3k_bl_update_brightnesses(d);
-		usleep(10000);
-	}
-	*/
 	
 	dot3k_bl_set_bar_graph_leds( d, 0b00101010 );
-	
+	usleep(500000);
+	dot3k_bl_set_bar_graph_leds( d, 0b00010101 );
+	usleep(500000);
+	dot3k_bl_set_bar_graph_leds( d, 0b00111111 );
+
+	usleep(1000000);
+
 	dot3k_bl_enable(d, 0);
+	dot3k_bl_set_bar_graph_leds( d, 0x00 );
 	return 0;
 }

@@ -24,6 +24,7 @@ void dot3k_bl_set_brightnesses(DOT3K *dot3k, int offset, int count, uint8_t brig
 void dot3k_bl_set_brightness(DOT3K *dot3k, int offset, int count, uint8_t brightness);
 void dot3k_bl_set_screen_rgb(DOT3K *dot3k, int8_t pos, uint8_t r, uint8_t g, uint8_t b);
 //void dot3k_bl_set_bar_graph(DOT3K *dot3k, float value, uint8_t brightness);
+void dot3k_bl_set_bar_graph_brightness(DOT3K *dot3k, uint8_t brightness);
 void dot3k_bl_set_bar_graph_leds(DOT3K *dot3k, uint8_t bitmask);
 //void dot3k_bl_set_bar_graph_train(DOT3K *dot3k, uint8_t brightness_on, uint8_t brightness_off, int position, int wrap);
 void dot3k_bl_update_brightnesses(DOT3K *dot3k);

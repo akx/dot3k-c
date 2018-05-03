@@ -24,19 +24,19 @@ static uint8_t clamp_u8(int val) {
 
 static void dot3k_bl_update(DOT3K *dot3k) {
 	if(NOT_OPEN(dot3k)) return;
-	ioctl(fd, I2C_SLAVE, 0x54);
+	ioctl(dot3k->backlight_i2c_fd, I2C_SLAVE, 0x54);
 	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_UPDATE, 1, (uint8_t[]){0x01});
 }
 
 void dot3k_bl_reset(DOT3K *dot3k) {
 	if(NOT_OPEN(dot3k)) return;
-	ioctl(fd, I2C_SLAVE, 0x54);
+	ioctl(dot3k->backlight_i2c_fd, I2C_SLAVE, 0x54);
 	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_RESET, 1, (uint8_t[]){0xFF});
 }
 
 void dot3k_bl_enable(DOT3K *dot3k, int enable) {
 	if(NOT_OPEN(dot3k)) return;
-	ioctl(fd, I2C_SLAVE, 0x54);
+	ioctl(dot3k->backlight_i2c_fd, I2C_SLAVE, 0x54);
 	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_ENABLE_OUTPUT, 1, (uint8_t[]){enable ? 0x01 : 0x00});
 }
 
@@ -58,7 +58,7 @@ void dot3k_bl_update_brightnesses(DOT3K *dot3k) {
 		uint8_t level = dot3k->backlight_level[led];
 		data[led] = dot3k->backlight_level_map[led][level];
 	}
-	ioctl(fd, I2C_SLAVE, 0x54);
+	ioctl(dot3k->backlight_i2c_fd, I2C_SLAVE, 0x54);
 	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, CMD_SET_PWM_VALUES, 18, data);
 	dot3k_bl_update(dot3k);
 }
@@ -95,11 +95,22 @@ void dot3k_bl_set_screen_rgb(DOT3K *dot3k, int8_t pos, uint8_t r, uint8_t g, uin
     dot3k->backlight_level[(pos * 3) + 2] = r;
 }
 
+void dot3k_bl_set_bar_graph_brightness(DOT3K *dot3k, uint8_t brightness) {
+	if(NOT_OPEN(dot3k)) return;
+
+	// Target graph
+	ioctl(dot3k->backlight_i2c_fd, I2C_SLAVE, 0x2C);
+
+	// Set direct duty 0..8
+	uint8_t b = (brightness << 4);
+	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, R_LED_DIRECT_DUT, 1, (uint8_t[]){b});
+}
+
 void dot3k_bl_set_bar_graph_leds(DOT3K *dot3k, uint8_t bitmask) {
 	if(NOT_OPEN(dot3k)) return;
 
 	// Target graph
-	ioctl(fd, I2C_SLAVE, 0x2C);
+	ioctl(dot3k->backlight_i2c_fd, I2C_SLAVE, 0x2C);
 	
 	uint8_t actualvalue = bitmask & 0b00111111;	// 6 LEDS
 
@@ -149,6 +160,14 @@ int dot3k_bl_open(DOT3K *dot3k) {
 			dot3k->backlight_level_map[led][level] = level;
 		}
 	}
+
+	// Target graph
+	ioctl(fd, I2C_SLAVE, 0x2C);
+	// Set default polarity
+	i2c_smbus_write_i2c_block_data(dot3k->backlight_i2c_fd, R_LED_POLARITY, 1, (uint8_t[]){0x00});
+	dot3k_bl_set_bar_graph_brightness(dot3k, 0b00000100);
+	dot3k_bl_set_bar_graph_leds(dot3k, 0b00000000);
+
 	return 0;
 }
 

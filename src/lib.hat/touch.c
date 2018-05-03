@@ -8,6 +8,8 @@
 #include "i2c-dev.h"
 #include "dothat_private.h"
 
+#define NOT_OPEN(dothat) (dothat->i2c_fd <= 0)
+
 void dothat_input_recalibrate(DOTHAT *dothat)
 {
 	if(NOT_OPEN(dothat)) return;

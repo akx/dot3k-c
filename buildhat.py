@@ -23,7 +23,7 @@ def ensure_file_dir(path):
 
 
 def build_lib(flavor, sources):
-    obj_dir = "obj/%s" % flavor
+    obj_dir = "objhat/%s" % flavor
     obj_paths = []
     for src_path in sources:
         obj_name = os.path.basename(os.path.splitext(src_path)[0]) + ".o"
@@ -63,8 +63,8 @@ def build_tests():
 
 def clean():
     targets = itertools.chain(
-        glob.glob("obj/shared/*.o"),
-        glob.glob("obj/static/*.o"),
+        glob.glob("objhat/shared/*.o"),
+        glob.glob("objhat/static/*.o"),
         glob.glob("./libdothat.*"),
         glob.glob("bin/*-hattest"),
     )

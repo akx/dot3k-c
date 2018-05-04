@@ -18,6 +18,12 @@
 
 #define NOT_OPEN(dothat) (dothat->i2c_fd <= 0)
 
+void dothat_input_clearinterrupt(DOTHAT *dothat)
+{
+	uint8_t v = (uint8_t)i2c_smbus_read_byte_data(dothat->i2c_fd, R_MAIN_CONTROL);
+	i2c_smbus_write_byte_data(dothat->i2c_fd, R_MAIN_CONTROL, (v & 0b11111110));
+}
+
 void dothat_input_recalibrate(DOTHAT *dothat)
 {
 	if(NOT_OPEN(dothat)) return;
@@ -36,13 +42,7 @@ uint8_t dothat_input_poll(DOTHAT *dothat)
 	// Read input status
 	inputmap = i2c_smbus_read_byte_data(dothat->i2c_fd, R_INPUT_STATUS);
 
-	//i2c_smbus_read_i2c_block_data(dothat->i2c_fd, R_INPUT_1_THRESH, 6, (uint8_t*)&threshold);
-	//i2c_smbus_read_i2c_block_data(dothat->i2c_fd, R_INPUT_1_DELTA, 6, (uint8_t*)&delta);
-	// Clear interrupt
-	uint8_t v = (uint8_t)i2c_smbus_read_byte_data(dothat->i2c_fd, R_MAIN_CONTROL);
-	i2c_smbus_write_byte_data(dothat->i2c_fd, R_MAIN_CONTROL, (v & 0b11111110));
-
-	// TODO: Conver to bitmask
+	dothat_input_clearinterrupt(dothat);
 
 	return inputmap;
 }

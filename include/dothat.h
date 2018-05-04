@@ -35,6 +35,7 @@ void dothat_graph_set_leds(DOTHAT *dothat, uint8_t bitmask);
 #define DOTHAT_BUTTON  0b00010000
 #define DOTHAT_RIGHT   0b00100000
 
+void dothat_input_clearinterrupt(DOTHAT *dothat);
 void dothat_input_recalibrate(DOTHAT *dothat);
 uint8_t dothat_input_poll(DOTHAT *dothat);
 

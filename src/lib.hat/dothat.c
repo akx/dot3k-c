@@ -49,14 +49,13 @@ DOTHAT* dothat_init() {
 	
 	// Initalise Inputs
 	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_INPUT_ENABLE, 1, (uint8_t[]){0b00111111}); // 6 buttons
-	/*
 	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_INTERRUPT_EN, 1, (uint8_t[]){0b00111111}); // 6 buttons
 	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_REPEAT_EN, 1, (uint8_t[]){0b00000000}); // 6 buttons
 	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_SAMPLING_CONFIG, 1, (uint8_t[]){0b00001000});
 	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_SENSITIVITY, 1, (uint8_t[]){0b01100000});
 	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_GENERAL_CONFIG, 1, (uint8_t[]){0b00111000});
 	i2c_smbus_write_i2c_block_data(dothat->i2c_fd, R_CONFIGURATION2, 1, (uint8_t[]){0b01100000});
-	*/
+	dothat_input_clearinterrupt(dothat);
 
 	// Initialise LCD
 	dothat->lcd_width = 16;

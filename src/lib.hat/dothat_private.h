@@ -57,6 +57,17 @@ void rpi_gpio_close(void);
 #define R_INPUT_1_DELTA     0x10
 #define R_INPUT_ENABLE      0x21
 
+#define R_SAMPLING_CONFIG   0x24 // Default 0x00111001
+#define R_CALIBRATION       0x26 // Default 0b00000000
+#define R_INTERRUPT_EN      0x27 // Default 0b11111111
+#define R_REPEAT_EN         0x28 // Default 0b11111111
+#define R_MTOUCH_CONFIG     0x2A // Default 0b11111111
+#define R_MTOUCH_PAT_CONF   0x2B
+#define R_MTOUCH_PATTERN    0x2D
+#define R_COUNT_O_LIMIT     0x2E
+#define R_RECALIBRATION     0x2F
+
+
 #define BUILDING_DOTHAT
 #include "dothat.h"
 

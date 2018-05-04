@@ -17,13 +17,17 @@ Added a new version which supports [Pimoroni's Display-O-Tron HAT](https://shop.
 
 # Compiling
 Build everything
+
     make [all]
     
 Build just the DOT3K library
+
     make dot3k
 
 Build just the DOTHAT library
+
     make dothat
     
 Clean all build files
+
     make clean

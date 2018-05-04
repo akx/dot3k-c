@@ -36,8 +36,6 @@ void dothat_input_recalibrate(DOTHAT *dothat)
 uint8_t dothat_input_poll(DOTHAT *dothat)
 {
 	uint8_t inputmap = 0x00;
-	uint8_t threshold[6] = { 0, 0, 0, 0, 0, 0 };
-	uint8_t delta[6] = { 0, 0, 0, 0, 0, 0 };
 	
 	// Read input status
 	inputmap = i2c_smbus_read_byte_data(dothat->i2c_fd, R_INPUT_STATUS);

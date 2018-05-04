@@ -16,13 +16,6 @@
 
 #define NOT_OPEN(dothat) (dothat->i2c_fd <= 0)
 
-static uint8_t clamp_u8(int val)
-{
-	if(val < 0) return 0;
-	if(val > 255) return 255;
-	return (uint8_t) val;
-}
-
 static void dothat_bl_update(DOTHAT *dothat)
 {
 	if(NOT_OPEN(dothat)) return;

@@ -33,12 +33,12 @@ uint8_t dothat_input_poll(DOTHAT *dothat)
 	uint8_t threshold[6] = { 0, 0, 0, 0, 0, 0 };
 	uint8_t delta[6] = { 0, 0, 0, 0, 0, 0 };
 	
-	return i2c_smbus_read_byte_data(dothat->i2c_fd, R_INPUT_STATUS);
+	inputmap = i2c_smbus_read_byte_data(dothat->i2c_fd, R_INPUT_STATUS);
 
-	// i2c_smbus_read_i2c_block_data(dothat->i2c_fd, R_INPUT_1_THRESH, 6, (uint8_t*)&threshold);
-	//i2c_smbus_read_i2c_block_data(dothat->i2c_fd, R_INPUT_1_DELTA, 6, (uint8_t*)&delta);
+	i2c_smbus_read_i2c_block_data(dothat->i2c_fd, R_INPUT_1_THRESH, 6, (uint8_t*)&threshold);
+	i2c_smbus_read_i2c_block_data(dothat->i2c_fd, R_INPUT_1_DELTA, 6, (uint8_t*)&delta);
 
 	// TODO: Conver to bitmask
 
-	return 0;
+	return inputmap;
 }

@@ -66,7 +66,9 @@ void rpi_gpio_close(void);
 #define R_MTOUCH_PATTERN    0x2D
 #define R_COUNT_O_LIMIT     0x2E
 #define R_RECALIBRATION     0x2F
-
+#define R_CONFIGURATION2    0x44
+#define R_GENERAL_CONFIG    0x20
+#define R_SENSITIVITY       0x1F
 
 #define BUILDING_DOTHAT
 #include "dothat.h"

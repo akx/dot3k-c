@@ -20,6 +20,9 @@
 
 void dothat_input_clearinterrupt(DOTHAT *dothat)
 {
+	// Target input device
+	ioctl(dothat->i2c_fd, I2C_SLAVE, 0x2C);
+
 	uint8_t v = (uint8_t)i2c_smbus_read_byte_data(dothat->i2c_fd, R_MAIN_CONTROL);
 	i2c_smbus_write_byte_data(dothat->i2c_fd, R_MAIN_CONTROL, (v & 0b11111110));
 }
@@ -36,6 +39,9 @@ void dothat_input_recalibrate(DOTHAT *dothat)
 uint8_t dothat_input_poll(DOTHAT *dothat)
 {
 	uint8_t inputmap = 0x00;
+
+	// Target input device
+	ioctl(dothat->i2c_fd, I2C_SLAVE, 0x2C);
 	
 	// Read input status
 	inputmap = i2c_smbus_read_byte_data(dothat->i2c_fd, R_INPUT_STATUS);

@@ -33,6 +33,9 @@ DOTHAT* dothat_init() {
 		perror("Failed to open SPI");
 		return 0;
 	}
+	dothat_lcd_write_command(dothat, 0x06, 0);
+	dothat_lcd_write_command(dothat, COMMAND_BIAS | 17, 1);
+	dothat_lcd_set_contrast(40);
 
 	// Initialise Backlight
 	dothat_bl_reset(dothat);

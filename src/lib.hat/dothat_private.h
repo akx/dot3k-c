@@ -71,6 +71,8 @@ void rpi_gpio_close(void);
 #define R_SENSITIVITY       0x1F
 #define R_MAIN_CONTROL      0x00
 
+#define COMMAND_BIAS        0x14 // 0b00010100
+
 #define BUILDING_DOTHAT
 #include "dothat.h"
 
